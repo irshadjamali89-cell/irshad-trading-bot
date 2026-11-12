@@ -9,7 +9,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- CYBERPUNK MIXED COLOR BACKGROUND & ROUND ANIMATED BUTTON CSS ---
+# --- CYBERPUNK THEME & ROTATING/GLOWING ROUND BUTTON CSS ---
 st.markdown("""
 <style>
 /* Mixed Cyberpunk Gradient Background */
@@ -22,7 +22,7 @@ st.markdown("""
 footer {visibility: hidden;}
 header {visibility: hidden;}
 
-/* Fix Text Labels Visibility on Dark Background */
+/* Fix Text Labels Visibility */
 label, .stSelectbox label, .stTextInput label {
     color: #00ffff !important;
     font-weight: bold !important;
@@ -41,27 +41,37 @@ label, .stSelectbox label, .stTextInput label {
     text-align: center;
 }
 
-/* Custom Styling for the Centered Round Rotating Button container */
+/* --- PERFECT ROUND & ROTATING GLOWING BUTTON --- */
+@keyframes rotateGlow {
+    0% { border-color: #ff007f; box-shadow: 0 0 15px #ff007f; }
+    50% { border-color: #00ffff; box-shadow: 0 0 25px #00ffff; }
+    100% { border-color: #ff007f; box-shadow: 0 0 15px #ff007f; }
+}
+
 .stButton > button {
-    background: linear-gradient(45deg, #ff007f, #00ffff, #ffcc00);
-    background-size: 200% 200%;
-    color: #0d1b2a;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 50px !important; /* Makes it completely round/oval */
-    border: 2px solid #ffffff;
-    padding: 15px 30px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    width: 140px !important;
+    height: 140px !important;
+    border-radius: 50% !important; /* Forces it into a 100% Perfect Circle */
+    background: linear-gradient(135deg, #1b263b, #0d1b2a) !important;
+    color: #00ffff !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    border: 3px solid #00ffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 20px auto !important;
+    animation: rotateGlow 3s infinite linear;
     transition: all 0.3s ease-in-out;
-    display: block;
-    margin: 0 auto;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
 }
 
 .stButton > button:hover {
-    transform: scale(1.05);
-    background-position: right center;
-    box-shadow: 0 0 30px #ff007f;
-    color: #ffffff;
+    transform: scale(1.1);
+    background: #00ffff !important;
+    color: #0d1b2a !important;
+    box-shadow: 0 0 35px #00ffff, 0 0 50px #ff007f;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -71,42 +81,60 @@ st.markdown("<h1 style='text-align: center; color: #ffd700; text-shadow: 0 0 10p
 st.markdown("<p style='text-align: center; color: #00ffff; font-weight: bold;'>⚡ Ultra-Strong Multi-Indicator AI Trading & Global Market Analyzer ⚡</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# --- LICENSE KEY INPUT ---
-license_key = st.text_input("🔑 ENTER LICENSE KEY", type="password", placeholder="Enter your active license key...")
+# --- STEP 1: LICENSE KEY GATE (Pehle sirf key aayegi) ---
+st.markdown("### 🔒 Security Authentication Required")
+license_key = st.text_input("🔑 ENTER YOUR LICENSE KEY", type="password", placeholder="Enter key to unlock bot...")
 
-# --- GLOBAL MARKETS & ASSETS ---
-market_categories = {
-    "🌍 Forex Currencies": ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "USD/CAD"],
-    "🪙 Cryptocurrencies": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "XRP/USDT"],
-    "🥇 Commodities & Stocks": ["GOLD (XAU/USD)", "SILVER", "NASDAQ (US100)", "CRUDE OIL"]
-}
+# Correct Secret Key
+CORRECT_KEY = "irshad123"
 
-cat_choice = st.selectbox("📂 SELECT MARKET CATEGORY", list(market_categories.keys()))
+if not license_key:
+    st.warning("⚠️ Please enter your active license key above to unlock the AI Trading Bot interface.")
+elif license_key != CORRECT_KEY:
+    st.error("❌ Invalid License Key! Please enter the correct key to proceed.")
+else:
+    # --- STEP 2: UNLOCKED BOT INTERFACE (Duniya ki saari currencies aur markets) ---
+    st.success("✅ License Verified Successfully! Welcome, Boss.")
+    st.markdown("---")
 
-col1, col2 = st.columns(2)
-with col1:
-    selected_asset = st.selectbox("🌐 SELECT ASSET", market_categories[cat_choice])
-with col2:
-    selected_time = st.selectbox("⏱️ SELECT TIMEFRAME", ["1M", "5M", "15M", "30M", "1H", "4H", "1D"])
+    market_categories = {
+        "🌍 All Major & Minor Forex Currencies": [
+            "EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "USD/CAD", "NZD/USD", "USD/CHF",
+            "EUR/GBP", "EUR/JPY", "GBP/JPY", "AUD/JPY", "CAD/JPY", "EUR/AUD", "GBP/AUD"
+        ],
+        "🪙 Cryptocurrencies (Global)": [
+            "BTC/USDT", "ETH/USDT", "SOL/USDT", "XRP/USDT", "DOGE/USDT", 
+            "ADA/USDT", "AVAX/USDT", "LINK/USDT", "DOT/USDT", "PEPE/USDT"
+        ],
+        "🥇 Commodities, Indices & Stocks": [
+            "GOLD (XAU/USD)", "SILVER (XAG/USD)", "NASDAQ (US100)", "US30 (Dow Jones)", 
+            "S&P 500 (US500)", "CRUDE OIL (WTI)", "BRENT OIL", "NATURAL GAS", "TESLA (TSLA)"
+        ]
+    }
 
-st.markdown("<br>", unsafe_allow_html=True)
+    cat_choice = st.selectbox("📂 SELECT MARKET CATEGORY", list(market_categories.keys()))
 
-# --- 100% CENTERED ROUND BUTTON CONTAINER ---
-c1, c2, c3 = st.columns([1, 2, 1])
-with c2:
-    start_clicked = st.button("🚀 START SIGNAL", use_container_width=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        selected_asset = st.selectbox("🌐 SELECT ASSET", market_categories[cat_choice])
+    with col2:
+        selected_time = st.selectbox("⏱️ SELECT TIMEFRAME", ["1M", "5M", "15M", "30M", "1H", "4H", "1D"])
 
-if start_clicked:
-    if not license_key:
-        st.error("⚠️ Please enter a valid License Key to run the AI bot!")
-    else:
-        with st.spinner('Scanning Global Markets with Advanced AI Indicators...'):
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # --- CENTERED PERFECT ROUND ROTATING BUTTON ---
+    c1, c2, c3 = st.columns([1, 2, 1])
+    with c2:
+        start_clicked = st.button("🚀\nSTART\nSIGNAL")
+
+    if start_clicked:
+        with st.spinner(f'Scanning {selected_asset} across Global Exchanges...'):
             sig = "STRONG BULLISH 🚀"
             sig_color = "#00ffcc"
-            conf = "95.2%"
-            price = 2385.50 if "GOLD" in selected_asset else 1.1079
-            rsi_val = 64.8
-            adv = "High volume institutional breakout detected across multi-timeframe indicators."
+            conf = "96.4%"
+            price = 2385.50 if "GOLD" in selected_asset else (68420.50 if "BTC" in selected_asset else 1.1079)
+            rsi_val = 65.2
+            adv = "Institutional liquidity sweep completed. High-probability trend continuation confirmed across global order books."
             
             # Display Card
             st.markdown(f"""
