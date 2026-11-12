@@ -9,7 +9,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- CYBERPUNK THEME & ROTATING/GLOWING ROUND BUTTON CSS ---
+# --- CYBERPUNK THEME & PERFECT CENTERED ROUND BUTTON CSS ---
 st.markdown("""
 <style>
 /* Mixed Cyberpunk Gradient Background */
@@ -41,11 +41,18 @@ label, .stSelectbox label, .stTextInput label {
     text-align: center;
 }
 
-/* --- PERFECT ROUND & ROTATING GLOWING BUTTON --- */
+/* --- 100% CENTERED PERFECT ROUND & ROTATING GLOWING BUTTON --- */
 @keyframes rotateGlow {
     0% { border-color: #ff007f; box-shadow: 0 0 15px #ff007f; }
     50% { border-color: #00ffff; box-shadow: 0 0 25px #00ffff; }
     100% { border-color: #ff007f; box-shadow: 0 0 15px #ff007f; }
+}
+
+div.stButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .stButton > button {
@@ -81,34 +88,37 @@ st.markdown("<h1 style='text-align: center; color: #ffd700; text-shadow: 0 0 10p
 st.markdown("<p style='text-align: center; color: #00ffff; font-weight: bold;'>⚡ Ultra-Strong Multi-Indicator AI Trading & Global Market Analyzer ⚡</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# --- STEP 1: LICENSE KEY GATE (Pehle sirf key aayegi) ---
+# --- STEP 1: LICENSE KEY GATE (Updated Key) ---
 st.markdown("### 🔒 Security Authentication Required")
 license_key = st.text_input("🔑 ENTER YOUR LICENSE KEY", type="password", placeholder="Enter key to unlock bot...")
 
-# Correct Secret Key
-CORRECT_KEY = "irshad123"
+# New Custom License Key
+CORRECT_KEY = "jamali@pro.bot.ai"
 
 if not license_key:
     st.warning("⚠️ Please enter your active license key above to unlock the AI Trading Bot interface.")
 elif license_key != CORRECT_KEY:
-    st.error("❌ Invalid License Key! Please enter the correct key to proceed.")
+    st.error("❌ Invalid License Key! Please enter the correct key (`jamali@pro.bot.ai`) to proceed.")
 else:
     # --- STEP 2: UNLOCKED BOT INTERFACE (Duniya ki saari currencies aur markets) ---
     st.success("✅ License Verified Successfully! Welcome, Boss.")
     st.markdown("---")
 
     market_categories = {
-        "🌍 All Major & Minor Forex Currencies": [
+        "🌍 All World Forex Currencies (Major & Minor)": [
             "EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "USD/CAD", "NZD/USD", "USD/CHF",
-            "EUR/GBP", "EUR/JPY", "GBP/JPY", "AUD/JPY", "CAD/JPY", "EUR/AUD", "GBP/AUD"
+            "EUR/GBP", "EUR/JPY", "GBP/JPY", "AUD/JPY", "CAD/JPY", "EUR/AUD", "GBP/AUD",
+            "USD/PKR", "USD/INR", "EUR/CAD", "AUD/NZD", "GBP/CHF", "NZD/JPY"
         ],
-        "🪙 Cryptocurrencies (Global)": [
+        "🪙 Cryptocurrencies (Global Exchanges)": [
             "BTC/USDT", "ETH/USDT", "SOL/USDT", "XRP/USDT", "DOGE/USDT", 
-            "ADA/USDT", "AVAX/USDT", "LINK/USDT", "DOT/USDT", "PEPE/USDT"
+            "ADA/USDT", "AVAX/USDT", "LINK/USDT", "DOT/USDT", "PEPE/USDT",
+            "SHIB/USDT", "MATIC/USDT", "TRX/USDT", "NEAR/USDT", "UNI/USDT"
         ],
-        "🥇 Commodities, Indices & Stocks": [
+        "🥇 Global Commodities, Indices & Stocks": [
             "GOLD (XAU/USD)", "SILVER (XAG/USD)", "NASDAQ (US100)", "US30 (Dow Jones)", 
-            "S&P 500 (US500)", "CRUDE OIL (WTI)", "BRENT OIL", "NATURAL GAS", "TESLA (TSLA)"
+            "S&P 500 (US500)", "CRUDE OIL (WTI)", "BRENT OIL", "NATURAL GAS", 
+            "PLATINUM", "PALLADIUM", "TESLA (TSLA)", "APPLE (AAPL)", "MICROSOFT (MSFT)"
         ]
     }
 
@@ -122,12 +132,19 @@ else:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # --- CENTERED PERFECT ROUND ROTATING BUTTON ---
+    # --- CENTERED PERFECT ROUND ROTATING BUTTON WITH AUDIO BEEP ---
     c1, c2, c3 = st.columns([1, 2, 1])
     with c2:
         start_clicked = st.button("🚀\nSTART\nSIGNAL")
 
     if start_clicked:
+        # Play Click Sound Effect using HTML audio
+        st.markdown("""
+            <audio autoplay>
+              <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg">
+            </audio>
+        """, unsafe_allow_html=True)
+
         with st.spinner(f'Scanning {selected_asset} across Global Exchanges...'):
             sig = "STRONG BULLISH 🚀"
             sig_color = "#00ffcc"
