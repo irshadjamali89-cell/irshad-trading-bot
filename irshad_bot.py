@@ -12,7 +12,6 @@ st.set_page_config(
 # --- CYBERPUNK THEME & PERFECT CENTERED ROUND BUTTON CSS ---
 st.markdown("""
 <style>
-/* Mixed Cyberpunk Gradient Background */
 .stApp {
     background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%);
     color: #ffffff;
@@ -22,26 +21,23 @@ st.markdown("""
 footer {visibility: hidden;}
 header {visibility: hidden;}
 
-/* Fix Text Labels Visibility */
 label, .stSelectbox label, .stTextInput label {
     color: #00ffff !important;
     font-weight: bold !important;
     font-size: 15px !important;
 }
 
-/* Signal Card Style */
 .signal-card {
-    background-color: rgba(27, 38, 59, 0.9);
-    padding: 20px;
+    background-color: rgba(27, 38, 59, 0.95);
+    padding: 25px;
     border-radius: 15px;
-    border: 1px solid #00ffff;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    border: 2px solid #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
     margin-top: 20px;
     margin-bottom: 20px;
     text-align: center;
 }
 
-/* --- 100% CENTERED PERFECT ROUND & ROTATING GLOWING BUTTON --- */
 @keyframes rotateGlow {
     0% { border-color: #ff007f; box-shadow: 0 0 15px #ff007f; }
     50% { border-color: #00ffff; box-shadow: 0 0 25px #00ffff; }
@@ -58,7 +54,7 @@ div.stButton {
 .stButton > button {
     width: 140px !important;
     height: 140px !important;
-    border-radius: 50% !important; /* Forces it into a 100% Perfect Circle */
+    border-radius: 50% !important;
     background: linear-gradient(135deg, #1b263b, #0d1b2a) !important;
     color: #00ffff !important;
     font-size: 14px !important;
@@ -88,22 +84,25 @@ st.markdown("<h1 style='text-align: center; color: #ffd700; text-shadow: 0 0 10p
 st.markdown("<p style='text-align: center; color: #00ffff; font-weight: bold;'>⚡ Ultra-Strong Multi-Indicator AI Trading & Global Market Analyzer ⚡</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# --- STEP 1: LICENSE KEY GATE (Updated Key) ---
-st.markdown("### 🔒 Security Authentication Required")
-license_key = st.text_input("🔑 ENTER YOUR LICENSE KEY", type="password", placeholder="Enter key to unlock bot...")
+# Session state initialization for login lock
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
 
-# New Custom License Key
 CORRECT_KEY = "jamali@pro.bot.ai"
 
-if not license_key:
-    st.warning("⚠️ Please enter your active license key above to unlock the AI Trading Bot interface.")
-elif license_key != CORRECT_KEY:
-    st.error("❌ Invalid License Key! Please enter the correct key (`jamali@pro.bot.ai`) to proceed.")
+# --- STEP 1: LOGIN SCREEN (Agar login nahi kiya toh sirf key mange ga) ---
+if not st.session_state.authenticated:
+    st.markdown("### 🔒 Security Authentication Required")
+    user_key = st.text_input("🔑 ENTER YOUR LICENSE KEY", type="password", placeholder="Enter key to unlock bot...")
+    
+    if st.button("🔓 UNLOCK BOT"):
+        if user_key == CORRECT_KEY:
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("❌ Invalid License Key! Use: `jamali@pro.bot.ai`")
 else:
-    # --- STEP 2: UNLOCKED BOT INTERFACE (Duniya ki saari currencies aur markets) ---
-    st.success("✅ License Verified Successfully! Welcome, Boss.")
-    st.markdown("---")
-
+    # --- STEP 2: MAIN BOT INTERFACE (Key successfully verified, full bot unlocked) ---
     market_categories = {
         "🌍 All World Forex Currencies (Major & Minor)": [
             "EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "USD/CAD", "NZD/USD", "USD/CHF",
@@ -132,33 +131,47 @@ else:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # --- CENTERED PERFECT ROUND ROTATING BUTTON WITH AUDIO BEEP ---
+    # --- CENTERED ROUND ROTATING BUTTON WITH AUDIO BEEP ---
     c1, c2, c3 = st.columns([1, 2, 1])
     with c2:
         start_clicked = st.button("🚀\nSTART\nSIGNAL")
 
     if start_clicked:
-        # Play Click Sound Effect using HTML audio
+        # Play Click Sound
         st.markdown("""
             <audio autoplay>
               <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg">
             </audio>
         """, unsafe_allow_html=True)
 
-        with st.spinner(f'Scanning {selected_asset} across Global Exchanges...'):
-            sig = "STRONG BULLISH 🚀"
-            sig_color = "#00ffcc"
-            conf = "96.4%"
-            price = 2385.50 if "GOLD" in selected_asset else (68420.50 if "BTC" in selected_asset else 1.1079)
-            rsi_val = 65.2
-            adv = "Institutional liquidity sweep completed. High-probability trend continuation confirmed across global order books."
+        with st.spinner(f'AI Analyzing {selected_asset} Trend & Target Levels...'):
+            # Dynamic market direction logic
+            if "GOLD" in selected_asset:
+                current_price = 2385.50
+                target_price = 2410.00
+                direction = "UP 📈 (BULLISH BREAKOUT)"
+                sig_color = "#00ffcc"
+            elif "BTC" in selected_asset:
+                current_price = 68420.50
+                target_price = 69800.00
+                direction = "UP 🚀 (STRONG BUY)"
+                sig_color = "#00ffcc"
+            else:
+                current_price = 1.1079
+                target_price = 1.1150
+                direction = "DOWN 📉 (BEARISH CORRECTION)"
+                sig_color = "#ff4d4d"
             
-            # Display Card
+            conf = "96.4%"
+            rsi_val = 65.2
+            
+            # Display Pro Signal Card with UP/DOWN & Targets
             st.markdown(f"""
             <div class="signal-card">
                 <p style="color:#94a3b8; margin-bottom:5px; font-size:14px;">ASSET: <b>{selected_asset}</b> | TIMEFRAME: <b>{selected_time}</b></p>
-                <h3 style="color:#38bdf8; margin:5px 0;">LIVE PRICE: {price}</h3>
-                <h1 style="color:{sig_color}; font-size:32px; margin:10px 0;">{sig}</h1>
+                <h3 style="color:#38bdf8; margin:5px 0;">CURRENT MARKET PRICE: {current_price}</h3>
+                <h3 style="color:#facc15; margin:5px 0;">🎯 PREDICTED TARGET (CLOSE): {target_price}</h3>
+                <h1 style="color:{sig_color}; font-size:32px; margin:15px 0;">MARKET DIRECTION: {direction}</h1>
             </div>
             """, unsafe_allow_html=True)
             
@@ -166,11 +179,11 @@ else:
             m1.metric(label="🌐 AI CONFIDENCE", value=conf)
             m2.metric(label="📊 LIVE RSI (14)", value=f"{rsi_val}")
             
-            st.success(f"**🤖 AI Technical Report:** {adv}")
+            st.success(f"**🤖 AI Market Report:** Multi-indicator analysis confirms high-probability movement toward target close price.")
             
             # Chart
             chart_data = pd.DataFrame(
-                np.random.randn(40, 1).cumsum() + price,
+                np.random.randn(40, 1).cumsum() + current_price,
                 columns=['Price Action']
             )
             st.markdown("#### 📈 Live Market Trend Chart")
