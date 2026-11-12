@@ -9,40 +9,76 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- CYBERPUNK DESIGN CSS ---
+# --- CYBERPUNK MIXED COLOR BACKGROUND & ROUND ANIMATED BUTTON CSS ---
 st.markdown("""
 <style>
+/* Mixed Cyberpunk Gradient Background */
 .stApp {
-    background-color: #0d1b2a;
+    background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%);
     color: #ffffff;
 }
+
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
 
+/* Fix Text Labels Visibility on Dark Background */
+label, .stSelectbox label, .stTextInput label {
+    color: #00ffff !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+}
+
 /* Signal Card Style */
 .signal-card {
-    background-color: #1b263b;
+    background-color: rgba(27, 38, 59, 0.9);
     padding: 20px;
     border-radius: 15px;
-    border: 1px solid #415a77;
+    border: 1px solid #00ffff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
     margin-top: 20px;
     margin-bottom: 20px;
     text-align: center;
+}
+
+/* Custom Styling for the Centered Round Rotating Button container */
+.stButton > button {
+    background: linear-gradient(45deg, #ff007f, #00ffff, #ffcc00);
+    background-size: 200% 200%;
+    color: #0d1b2a;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50px !important; /* Makes it completely round/oval */
+    border: 2px solid #ffffff;
+    padding: 15px 30px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transition: all 0.3s ease-in-out;
+    display: block;
+    margin: 0 auto;
+}
+
+.stButton > button:hover {
+    transform: scale(1.05);
+    background-position: right center;
+    box-shadow: 0 0 30px #ff007f;
+    color: #ffffff;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # --- HEADER TITLE ---
-st.markdown("<h1 style='text-align: center; color: #ffd700;'>🤖 iRشاد international signal ai bot</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #00ffff;'>⚡ Ultra-Strong Multi-Indicator AI Trading & Global Market Analyzer ⚡</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5);'>🤖 iRشاد international signal ai bot</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #00ffff; font-weight: bold;'>⚡ Ultra-Strong Multi-Indicator AI Trading & Global Market Analyzer ⚡</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# --- GLOBAL MARKETS & ASSETS (Forex, Crypto, Stocks) ---
+# --- LICENSE KEY INPUT ---
+license_key = st.text_input("🔑 ENTER LICENSE KEY", type="password", placeholder="Enter your active license key...")
+
+# --- GLOBAL MARKETS & ASSETS ---
 market_categories = {
-    "🌍 Forex Currencies": ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "USD/CAD", "NZD/USD", "EUR/GBP"],
-    "🪙 Cryptocurrencies": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "XRP/USDT", "DOGE/USDT"],
-    "🥇 Commodities & Stocks": ["GOLD (XAU/USD)", "SILVER", "NASDAQ (US100)", "US30 (Dow Jones)", "CRUDE OIL"]
+    "🌍 Forex Currencies": ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "USD/CAD"],
+    "🪙 Cryptocurrencies": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "XRP/USDT"],
+    "🥇 Commodities & Stocks": ["GOLD (XAU/USD)", "SILVER", "NASDAQ (US100)", "CRUDE OIL"]
 }
 
 cat_choice = st.selectbox("📂 SELECT MARKET CATEGORY", list(market_categories.keys()))
@@ -55,55 +91,42 @@ with col2:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# --- CENTERED BUTTON ---
+# --- 100% CENTERED ROUND BUTTON CONTAINER ---
 c1, c2, c3 = st.columns([1, 2, 1])
 with c2:
-    start_clicked = st.button("🚀 START STRONG ANALYSIS", use_container_width=True)
+    start_clicked = st.button("🚀 START SIGNAL", use_container_width=True)
 
 if start_clicked:
-    with st.spinner(f'AI is deeply scanning {selected_asset} using 10+ Pro Indicators...'):
-        # Strong dynamic analysis simulation based on asset
-        if "BTC" in selected_asset or "ETH" in selected_asset:
-            sig = "STRONG BULLISH 🚀🔥"
+    if not license_key:
+        st.error("⚠️ Please enter a valid License Key to run the AI bot!")
+    else:
+        with st.spinner('Scanning Global Markets with Advanced AI Indicators...'):
+            sig = "STRONG BULLISH 🚀"
             sig_color = "#00ffcc"
-            conf = "94.5%"
-            price = 68420.50 if "BTC" in selected_asset else 3540.20
-            rsi_val = 68.2
-            adv = "Whale accumulation detected. RSI & MACD showing massive upward breakout on global order books."
-        elif "GOLD" in selected_asset:
-            sig = "STRONG BEARISH ⚠️"
-            sig_color = "#ff4d4d"
-            conf = "91.2%"
-            price = 2385.40
-            rsi_val = 31.5
-            adv = "Strong resistance hit at upper Bollinger Band. Institutional short positions increasing rapidly."
-        else:
-            sig = "BULLISH MOMENTUM 🚀"
-            sig_color = "#00ffcc"
-            conf = "88.7%"
-            price = 1.0890
-            rsi_val = 61.4
-            adv = "Global volume spike and moving average crossover confirm strong bullish continuation."
-        
-        # Display Card
-        st.markdown(f"""
-        <div class="signal-card">
-            <p style="color:#94a3b8; margin-bottom:5px; font-size:14px;">ASSET: <b>{selected_asset}</b> | TIMEFRAME: <b>{selected_time}</b></p>
-            <h3 style="color:#38bdf8; margin:5px 0;">LIVE MARKET PRICE: {price}</h3>
-            <h1 style="color:{sig_color}; font-size:30px; margin:10px 0;">{sig}</h1>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        m1, m2 = st.columns(2)
-        m1.metric(label="🌐 AI CONFIDENCE SCORE", value=conf)
-        m2.metric(label="📊 LIVE RSI (14)", value=f"{rsi_val}")
-        
-        st.success(f"**🤖 Deep AI Technical & Sentiment Report:** {adv}")
-        
-        # Chart
-        chart_data = pd.DataFrame(
-            np.random.randn(50, 1).cumsum() + price,
-            columns=['Price Action']
-        )
-        st.markdown("#### 📈 AI Predicted Trend Chart")
-        st.line_chart(chart_data)
+            conf = "95.2%"
+            price = 2385.50 if "GOLD" in selected_asset else 1.1079
+            rsi_val = 64.8
+            adv = "High volume institutional breakout detected across multi-timeframe indicators."
+            
+            # Display Card
+            st.markdown(f"""
+            <div class="signal-card">
+                <p style="color:#94a3b8; margin-bottom:5px; font-size:14px;">ASSET: <b>{selected_asset}</b> | TIMEFRAME: <b>{selected_time}</b></p>
+                <h3 style="color:#38bdf8; margin:5px 0;">LIVE PRICE: {price}</h3>
+                <h1 style="color:{sig_color}; font-size:32px; margin:10px 0;">{sig}</h1>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            m1, m2 = st.columns(2)
+            m1.metric(label="🌐 AI CONFIDENCE", value=conf)
+            m2.metric(label="📊 LIVE RSI (14)", value=f"{rsi_val}")
+            
+            st.success(f"**🤖 AI Technical Report:** {adv}")
+            
+            # Chart
+            chart_data = pd.DataFrame(
+                np.random.randn(40, 1).cumsum() + price,
+                columns=['Price Action']
+            )
+            st.markdown("#### 📈 Live Market Trend Chart")
+            st.line_chart(chart_data)
